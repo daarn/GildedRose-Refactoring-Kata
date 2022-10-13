@@ -38,20 +38,16 @@ class GildedRose
     return item.quality = 0 if past_sell_date?(item)
     return if item.quality == MAX_QUALITY
 
-    if item.sell_in <= 5
-      item.quality += 3
-    elsif item.sell_in <= 10
-      item.quality += 2
-    else
-      item.quality += 1
-    end
+    item.quality += 1
+    item.quality += 1 if item.sell_in <= 10
+    item.quality += 1 if item.sell_in <= 5
 
     max_quality?(item)
   end
 
   def update_standard_item(item, quality_decrement)
-    return if item.quality == 0
-    
+    return if item.quality.zero?
+
     item.quality -= quality_decrement
     item.quality -= quality_decrement if past_sell_date?(item)
 
